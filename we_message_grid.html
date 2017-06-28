@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="msapplication-tap-highlight" content="no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+		
+		<script src="jquery-3.2.1.min.js" type="text/javascript"></script>
+		
+		<style type="text/css">
+			.musicAudio{
+				width:50%;
+				height:50px;
+				font-size: 0px;
+				position:absolute;
+				border-radius:10px;
+				background:#97a0b0;
+				margin-left:10px;
+			}
+			
+			.musicAudio *{
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 14px;
+				padding : 8px 0 0 8px;
+			}
+			
+			.musicAudioTime{
+				margin:5px 5px;
+			}
+			
+			.arrow-left { 
+				width:0; 
+				height:0; 
+				border-top:10px solid transparent; 
+				border-bottom:10px solid transparent; 
+				border-right:10px solid #97a0b0;
+				position:absolute;
+				margin-top:12px;
+			}
+			
+			.totalTime{
+				color:white;
+			}
+		</style>
+	</head>
+	<body>
+		<audio id="audio" hidden preload="auto">
+			<source src="http://voice.1sj.tv/vcomment/24.mp3" type="audio/mp3">
+		</audio>
+
+		<div class="arrow-left"></div>
+		<div class="musicAudio" onclick="playOrStop();">
+			<img id="musicAudioPlayAndStop"  onclick="playOrStop(this);" src="img/3.png"/>
+			<p class="musicAudioTime">
+				<span class="totalTime">10s</span>
+			</p>
+		</div>
+
+		<script type="text/javascript">
+			var audio = $('#audio')[0];
+			
+			audio.onended = function() {
+				clearInterval(progressTimer);
+				playing = false;
+				i = 0;
+				audio.load();
+				$("#musicAudioPlayAndStop").attr("src", "img/3.png");
+			}
+		
+			var progressTimer;
+			var playing = false;
+			function playOrStop(obj){
+				if((audio.readyState ==3 || audio.readyState == 4) && !playing){
+					playing = true;
+					audio.play();
+					progressTimer=window.setInterval(audioProgress,200);
+					return;
+				}
+				audio.load();
+				playing = false;
+				clearInterval(progressTimer);
+				$("#musicAudioPlayAndStop").attr("src", "img/3.png");
+			}
+			
+			var arr = ["img/1.png","img/2.png", "img/3.png"];
+			var i = 0;
+			function audioProgress(){
+				if(audio.readyState ==3 || audio.readyState == 4){
+					if(audio.currentTime < audio.duration){
+						if(audio.played && audio.played.length > 0){
+							$("#musicAudioPlayAndStop").attr("src", arr[i++]);
+						}
+					}else{
+						clearInterval(progressTimer);
+						playing = false;
+						i = 0;
+						$("#musicAudioPlayAndStop").attr("src", "img/3.png");
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
