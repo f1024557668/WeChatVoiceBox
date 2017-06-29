@@ -92,7 +92,7 @@
 				if(audio.readyState ==3 || audio.readyState == 4){
 					if(audio.currentTime < audio.duration){
 						if(audio.played && audio.played.length > 0){
-							$("#musicAudioPlayAndStop").attr("src", arr[i++]);
+							$("#musicAudioPlayAndStop").attr("src", arr[i++ % 3]);
 						}
 					}else{
 						clearInterval(progressTimer);
